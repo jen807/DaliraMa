@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { mainStyle } from "../../Globalstyled";
 import CloverPng from "../../img/clover.png";
 import { useEffect, useState } from "react";
-import { fetchAllHorseData } from "../../api"; // fetchAllHorseData 함수가 있어야 합니다.
+import { fetchAllHorseData } from "../../api";
 
 const Container = styled.section`
   width: 100%;

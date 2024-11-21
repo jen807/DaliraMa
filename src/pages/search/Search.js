@@ -47,20 +47,50 @@ const Button = styled.button`
 const ResultContainer = styled.div`
   margin-top: 20px;
   padding: 20px;
+  width: 100%;
+  height: 700px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Title = styled.h2`
-  font-size: 18px;
+  font-size: 38px;
   font-weight: bold;
   margin-bottom: 10px;
+  text-align: center;
+
+  p {
+    font-size: 20px;
+    margin-top: 15px;
+  }
 `;
 
 const Info = styled.p`
   font-size: 14px;
   margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 60px;
+  align-items: center;
+
+  div {
+    font-weight: 700;
+    width: 82px;
+    margin-right: 20px;
+  }
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 200px;
+  }
 `;
 
 const SearchPage = () => {
@@ -104,22 +134,70 @@ const SearchPage = () => {
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </Button>
       </SearchBar>
-
       {loading && <p>검색 중...</p>}
-
       {error && <p style={{ color: "#FF5656" }}>{error}</p>}
-
       {result && (
         <ResultContainer>
-          <Title>{result.hrName}</Title>
-          <Info>마번: {result.hrNo}</Info>
-          <Info>출생일: {result.birthday}</Info>
-          <Info>성별: {result.sex}</Info>
-          <Info>조교사명: {result.trName}</Info>
-          <Info>부마: {result.faHrName}</Info>
-          <Info>모마: {result.moHrName}</Info>
-          <Info>최근 1년 출전 횟수: {result.rcCntY}</Info>
-          <Info>통산 1착 횟수: {result.ord1CntT}</Info>
+          <Title>
+            {result.hrName}
+            <p>{result.hrNo}번</p>
+          </Title>
+          <Info>
+            <div>출생일 :</div>
+            <span>
+              {result.birthday.length > 10
+                ? `${result.birthday.slice(0, 10)}..`
+                : result.birthday}
+            </span>
+          </Info>
+          <Info>
+            <div>성별 :</div>
+            <span>
+              {result.sex.length > 10
+                ? `${result.sex.slice(0, 10)}..`
+                : result.sex}
+            </span>
+          </Info>
+          <Info>
+            <div>조교사명 :</div>
+            <span>
+              {result.trName.length > 10
+                ? `${result.trName.slice(0, 10)}..`
+                : result.trName}
+            </span>
+          </Info>
+          <Info>
+            <div>부마 :</div>
+            <span>
+              {result.faHrName.length > 10
+                ? `${result.faHrName.slice(0, 10)}..`
+                : result.faHrName}
+            </span>
+          </Info>
+          <Info>
+            <div>모마 :</div>
+            <span>
+              {result.moHrName.length > 10
+                ? `${result.moHrName.slice(0, 10)}..`
+                : result.moHrName}
+            </span>
+          </Info>
+          <Info>
+            <div>통산 출전 횟수 :</div>
+            <span>
+              {result.rcCntT.length > 10
+                ? `${result.rcCntT.slice(0, 10)}..`
+                : result.rcCntT}
+            </span>
+          </Info>
+          <Info>
+            <div>통산 1착 횟수 :</div>
+            <span>
+              {result.ord1CntT.length > 10
+                ? `${result.ord1CntT.slice(0, 10)}..`
+                : result.ord1CntT}
+            </span>
+          </Info>
         </ResultContainer>
       )}
     </Container>
