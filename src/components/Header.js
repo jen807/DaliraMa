@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import { mainStyle } from "../Globalstyled";
+// import { mainStyle } from "../Globalstyled";
 import LogoImg from "../img/LogoImg.png";
+import { Link } from "react-router-dom";
 
 const Container = styled.header`
   position: absolute;
@@ -25,13 +26,19 @@ const Logo = styled.div`
 
 const Search = styled.div`
   font-size: 20px;
+  color: white;
+  a {
+    color: white;
+  }
 `;
 
 const Header = () => {
   return (
     <Container>
       <Logo />
-      <Search>검색</Search>
+      <Search>
+        <Link to={"/search"}>검색</Link>
+      </Search>
     </Container>
   );
 };

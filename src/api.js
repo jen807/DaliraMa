@@ -1,20 +1,39 @@
-const fetch = require("node-fetch");
+const baseUrl = "http://apis.data.go.kr/B551015/API8_2/raceHorseInfo_2";
+const serviceKey =
+  "Y2zUAeVXmIKWdNkUeoLVnA%2BfvwI8M%2B6y6%2FPP6c0pmG4E4Vq87OGJmkC1dWD%2BVb9Ylhxx6QGMSes%2B3%2BXXeGf9hw%3D%3D";
 
-const baseUrl = "https://apis.data.go.kr/B551015/API8_2";
-const options = {
-  method: "get",
-  headers: {
-    accept: "application/json",
-    Authorization:
-      "Y2zUAeVXmIKWdNkUeoLVnA+fvwI8M+6y6/PP6c0pmG4E4Vq87OGJmkC1dWD+Vb9Ylhxx6QGMSes+3+XXeGf9hw==",
-  },
-};
-export const horseData = fetch(`${baseUrl}/raceHorseInfo_2`, options).then(
-  (res) => res.json()
-);
+export const fetchAllHorseData = async () => {
+  let allData = [];
+  const pageNo = 1;
+  const numOfRows = 3000;
 
-export const searchHorse = (keyword) => {
-  const searchUrl =
-    baseUrl + `search/movie?query=${keyword}&include_adult=true&language=ko-kr`;
-  return fetch(searchUrl, options).then((res) => res.json());
+  try {
+    const response = await fetch(
+      `${baseUrl}?ServiceKey=${serviceKey}&pageNo=${pageNo}&numOfRows=${numOfRows}&_type=json`
+    );
+
+    const textResponse = await response.text();
+    // console.log("Raw Response Text:", textResponse);
+    try {
+      const data = JSON.parse(textResponse);
+
+      if (data?.response?.body?.items?.item) {
+        allData = data.response.body.items.item;
+      } else {
+        console.warn("No valid data received.");
+        return [];
+      }
+    } catch (jsonError) {
+      console.error("JSON 변환 실패:", jsonError);
+      throw new Error("Invalid JSON Response");
+    }
+
+    const filteredData = allData.filter((item) => item.meet === "부산경남");
+    console.log("필터링된 데이터:", filteredData);
+
+    return filteredData;
+  } catch (error) {
+    console.error("Error fetching horse data:", error);
+    return [];
+  }
 };
