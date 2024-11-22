@@ -14,9 +14,11 @@ ${reset}
 }
 
 body{
+    width: 100%;
     font-family: "Noto Sans KR", sans-serif;
     letter-spacing: -1px;
     background: linear-gradient(to bottom, #191731, #53516B);
+    background-repeat: no-repeat;
     color: white;
 }
 

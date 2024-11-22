@@ -5,14 +5,15 @@ import { useEffect, useState } from "react";
 import { fetchAllHorseData } from "../../api";
 import Ma from "../../img/ma.png";
 import Loading from "./components/Loading";
+import useScrollTop from "../../lib/useScrollTop";
 
 const Container = styled.section`
   width: 100%;
   max-width: 440px;
-  height: 956px;
   padding: ${mainStyle.pcPadding};
   margin: 0 auto;
   padding-top: 110px;
+  min-height: 956px;
 `;
 
 const MaImg = styled.div`
@@ -138,12 +139,21 @@ const Button = styled.button`
   color: #191731;
 `;
 
+const TitleWrap = styled.div`
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+`;
+
 const InfoContainer = styled.div`
   width: 100%;
   height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 100px;
 `;
 
 const TopCon = styled.div`
@@ -167,6 +177,25 @@ const TopCon = styled.div`
   }
 `;
 
+const ScrollTopButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 50%;
+  transform: translateX(+50%);
+  width: 40px;
+  height: 40px;
+  background-color: #191731;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+`;
+
 const CenterCon = styled(TopCon)``;
 
 const BottomCon = styled(TopCon)``;
@@ -179,6 +208,21 @@ const Home = () => {
   const [topWinner, setTopWinner] = useState(null);
   const [topRacer, setTopRacer] = useState(null);
   const [oldestHorse, setOldestHorse] = useState(null);
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const getRandomHorse = () => {
+    if (horseList.length > 0) {
+      const randomIndex = Math.floor(Math.random() * horseList.length);
+      setRandomHorse(horseList[randomIndex]);
+    }
+  };
 
   useEffect(() => {
     const loadHorses = async () => {
@@ -223,6 +267,7 @@ const Home = () => {
         <Loading />
       ) : (
         <>
+          <TitleWrap>당신만의 행운 경주마는?</TitleWrap>
           <LuckyHorseContainer>
             <Title>
               <Clover />
@@ -262,8 +307,10 @@ const Home = () => {
                 <h2>{randomHorse ? randomHorse.trName : "-"}</h2>
               </TrName>
             </InfoWrap>
-            <Button>오늘 당신의 행운마는?</Button>
+            <Button onClick={getRandomHorse}>오늘 당신의 행운마는?</Button>
           </LuckyHorseContainer>
+
+          <TitleWrap>각 분야별 1위 경주마</TitleWrap>
 
           <InfoContainer>
             <TopCon>
@@ -293,6 +340,8 @@ const Home = () => {
           </InfoContainer>
         </>
       )}
+
+      <ScrollTopButton onClick={ScrollToTop}>TOP</ScrollTopButton>
     </Container>
   );
 };

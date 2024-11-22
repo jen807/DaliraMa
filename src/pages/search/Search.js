@@ -5,11 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Ma from "../../img/ma.png";
 import { PieChart } from "react-minimal-pie-chart";
+import useScrollTop from "../../lib/useScrollTop";
 
 const Container = styled.section`
   width: 100%;
   max-width: 440px;
-  height: 956px;
+  min-height: 1000px;
   margin: 0 auto;
   padding: 100px 40px;
 `;
@@ -143,6 +144,25 @@ const NumberWrap = styled.div`
   align-items: center;
 `;
 
+const ScrollTopButton = styled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 50%;
+  transform: translateX(+50%);
+  width: 40px;
+  height: 40px;
+  background-color: #191731;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+`;
+
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState(null);
@@ -171,6 +191,20 @@ const SearchPage = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const ScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <Container>
       <MaImg />
@@ -180,6 +214,7 @@ const SearchPage = () => {
           placeholder="마명을 입력하세요"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <Button onClick={handleSearch}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -276,6 +311,7 @@ const SearchPage = () => {
           </Info>
         </ResultContainer>
       )}
+      <ScrollTopButton onClick={ScrollToTop}>TOP</ScrollTopButton>
     </Container>
   );
 };
