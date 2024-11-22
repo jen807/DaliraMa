@@ -1,4 +1,4 @@
-const baseUrl = "http://apis.data.go.kr/B551015/API8_2/raceHorseInfo_2";
+const baseUrl = "https://apis.data.go.kr/B551015/API8_2/raceHorseInfo_2";
 const serviceKey =
   "Y2zUAeVXmIKWdNkUeoLVnA%2BfvwI8M%2B6y6%2FPP6c0pmG4E4Vq87OGJmkC1dWD%2BVb9Ylhxx6QGMSes%2B3%2BXXeGf9hw%3D%3D";
 
