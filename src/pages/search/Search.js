@@ -3,13 +3,25 @@ import styled from "styled-components";
 import { fetchAllHorseData } from "../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Ma from "../../img/ma.png";
+import { PieChart } from "react-minimal-pie-chart";
 
 const Container = styled.section`
   width: 100%;
   max-width: 440px;
-  height: 100vh;
+  height: 956px;
   margin: 0 auto;
   padding: 100px 40px;
+`;
+
+const MaImg = styled.div`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-image: url(${Ma});
+  width: 372.5px;
+  height: 267.58px;
 `;
 
 const SearchBar = styled.div`
@@ -45,22 +57,24 @@ const Button = styled.button`
 `;
 
 const ResultContainer = styled.div`
-  margin-top: 20px;
+  margin-top: 40px;
   padding: 20px;
   width: 100%;
   height: 700px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Title = styled.h2`
+  margin-top: 40px;
   font-size: 38px;
   font-weight: bold;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   text-align: center;
 
   p {
@@ -71,7 +85,7 @@ const Title = styled.h2`
 
 const Info = styled.p`
   font-size: 14px;
-  margin: 5px 0;
+  margin: 8px 0;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -91,6 +105,42 @@ const Info = styled.p`
     display: block;
     max-width: 200px;
   }
+`;
+
+const LeftCon = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+`;
+
+const CenterBar = styled.div`
+  width: 2px;
+  height: 80px;
+  background-color: white;
+  opacity: 0.2;
+`;
+
+const RightCon = styled(LeftCon)``;
+
+const NumberWrap = styled.div`
+  padding: 0 40px;
+  margin-bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const SearchPage = () => {
@@ -123,6 +173,7 @@ const SearchPage = () => {
 
   return (
     <Container>
+      <MaImg />
       <SearchBar>
         <Input
           type="text"
@@ -142,6 +193,47 @@ const SearchPage = () => {
             {result.hrName}
             <p>{result.hrNo}번</p>
           </Title>
+          <PieChart
+            data={[
+              {
+                title: "1착",
+                value: result.ord1CntT,
+                color: "#fff",
+              },
+              {
+                title: "나머지",
+                value: result.rcCntT - result.ord1CntT,
+                color: "#7A798A",
+              },
+            ]}
+            radius={30}
+            lineWidth={20}
+            startAngle={-90}
+            style={{ height: "250px" }}
+          />
+
+          <NumberWrap>
+            <LeftCon>
+              <h3>통산 출전 횟수</h3>
+              <h1>
+                {result.rcCntT.length > 10
+                  ? `${result.rcCntT.slice(0, 10)}..`
+                  : result.rcCntT}
+              </h1>
+            </LeftCon>
+
+            <CenterBar />
+
+            <RightCon>
+              <h3>통산 우승 횟수</h3>
+              <h1>
+                {result.ord1CntT.length > 10
+                  ? `${result.ord1CntT.slice(0, 10)}..`
+                  : result.ord1CntT}
+              </h1>
+            </RightCon>
+          </NumberWrap>
+
           <Info>
             <div>출생일 :</div>
             <span>
@@ -180,22 +272,6 @@ const SearchPage = () => {
               {result.moHrName.length > 10
                 ? `${result.moHrName.slice(0, 10)}..`
                 : result.moHrName}
-            </span>
-          </Info>
-          <Info>
-            <div>통산 출전 횟수 :</div>
-            <span>
-              {result.rcCntT.length > 10
-                ? `${result.rcCntT.slice(0, 10)}..`
-                : result.rcCntT}
-            </span>
-          </Info>
-          <Info>
-            <div>통산 1착 횟수 :</div>
-            <span>
-              {result.ord1CntT.length > 10
-                ? `${result.ord1CntT.slice(0, 10)}..`
-                : result.ord1CntT}
             </span>
           </Info>
         </ResultContainer>

@@ -35,7 +35,9 @@ const Search = styled.div`
 const Header = () => {
   return (
     <Container>
-      <Logo />
+      <Link to={"/"}>
+        <Logo />
+      </Link>
       <Search>
         <Link to={"/search"}>검색</Link>
       </Search>
