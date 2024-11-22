@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { fetchAllHorseData } from "../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Ma from "../../img/ma.png";
 import { PieChart } from "react-minimal-pie-chart";
-import useScrollTop from "../../lib/useScrollTop";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.section`
   width: 100%;
@@ -75,7 +75,6 @@ const Title = styled.h2`
   margin-top: 40px;
   font-size: 38px;
   font-weight: bold;
-  /* margin-bottom: 10px; */
   text-align: center;
 
   p {
@@ -164,7 +163,8 @@ const ScrollTopButton = styled.button`
 `;
 
 const SearchPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { state } = useLocation();
+  const [searchTerm, setSearchTerm] = useState(state?.hrName || "");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -184,7 +184,6 @@ const SearchPage = () => {
         setError("검색한 마명을 찾을 수 없습니다.");
       }
     } catch (err) {
-      console.error("Search Error:", err);
       setError("검색 중 문제가 발생했습니다.");
     } finally {
       setLoading(false);
@@ -197,13 +196,12 @@ const SearchPage = () => {
     }
   };
 
-  const ScrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
+  useEffect(() => {
+    if (state?.hrName) {
+      setSearchTerm(state.hrName);
+      handleSearch();
+    }
+  }, [state]);
 
   return (
     <Container>
@@ -246,72 +244,44 @@ const SearchPage = () => {
             startAngle={-90}
             style={{ height: "250px" }}
           />
-
           <NumberWrap>
             <LeftCon>
               <h3>통산 출전 횟수</h3>
-              <h1>
-                {result.rcCntT.length > 10
-                  ? `${result.rcCntT.slice(0, 10)}..`
-                  : result.rcCntT}
-              </h1>
+              <h1>{result.rcCntT}</h1>
             </LeftCon>
-
             <CenterBar />
-
             <RightCon>
               <h3>통산 우승 횟수</h3>
-              <h1>
-                {result.ord1CntT.length > 10
-                  ? `${result.ord1CntT.slice(0, 10)}..`
-                  : result.ord1CntT}
-              </h1>
+              <h1>{result.ord1CntT}</h1>
             </RightCon>
           </NumberWrap>
-
           <Info>
             <div>출생일 :</div>
-            <span>
-              {result.birthday.length > 10
-                ? `${result.birthday.slice(0, 10)}..`
-                : result.birthday}
-            </span>
+            <span>{result.birthday}</span>
           </Info>
           <Info>
             <div>성별 :</div>
-            <span>
-              {result.sex.length > 10
-                ? `${result.sex.slice(0, 10)}..`
-                : result.sex}
-            </span>
+            <span>{result.sex}</span>
           </Info>
           <Info>
             <div>조교사명 :</div>
-            <span>
-              {result.trName.length > 10
-                ? `${result.trName.slice(0, 10)}..`
-                : result.trName}
-            </span>
+            <span>{result.trName}</span>
           </Info>
           <Info>
             <div>부마 :</div>
-            <span>
-              {result.faHrName.length > 10
-                ? `${result.faHrName.slice(0, 10)}..`
-                : result.faHrName}
-            </span>
+            <span>{result.faHrName}</span>
           </Info>
           <Info>
             <div>모마 :</div>
-            <span>
-              {result.moHrName.length > 10
-                ? `${result.moHrName.slice(0, 10)}..`
-                : result.moHrName}
-            </span>
+            <span>{result.moHrName}</span>
           </Info>
         </ResultContainer>
       )}
-      <ScrollTopButton onClick={ScrollToTop}>TOP</ScrollTopButton>
+      <ScrollTopButton
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
+        TOP
+      </ScrollTopButton>
     </Container>
   );
 };

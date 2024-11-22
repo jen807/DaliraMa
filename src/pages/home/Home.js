@@ -6,6 +6,7 @@ import { fetchAllHorseData } from "../../api";
 import Ma from "../../img/ma.png";
 import Loading from "./components/Loading";
 import useScrollTop from "../../lib/useScrollTop";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.section`
   width: 100%;
@@ -137,6 +138,20 @@ const Button = styled.button`
   border-radius: 5px;
   font-weight: 500;
   color: #191731;
+  cursor: pointer;
+`;
+const Buttons = styled.button`
+  all: unset;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #191731;
+  border-radius: 5px;
+  font-weight: 300;
+  color: #fff;
+  cursor: pointer;
 `;
 
 const TitleWrap = styled.div`
@@ -208,6 +223,13 @@ const Home = () => {
   const [topWinner, setTopWinner] = useState(null);
   const [topRacer, setTopRacer] = useState(null);
   const [oldestHorse, setOldestHorse] = useState(null);
+  const navigate = useNavigate();
+
+  const navigateToSearch = () => {
+    if (randomHorse) {
+      navigate("/search", { state: { hrName: randomHorse.hrName } });
+    }
+  };
 
   const ScrollToTop = () => {
     window.scrollTo({
@@ -307,7 +329,10 @@ const Home = () => {
                 <h2>{randomHorse ? randomHorse.trName : "-"}</h2>
               </TrName>
             </InfoWrap>
-            <Button onClick={getRandomHorse}>오늘 당신의 행운마는?</Button>
+            <Button onClick={getRandomHorse}>다른 행운마를 찾아볼까요?</Button>
+            <Buttons onClick={navigateToSearch}>
+              "{randomHorse ? randomHorse.hrName : "-"}" 에 대해 알아보기
+            </Buttons>
           </LuckyHorseContainer>
 
           <TitleWrap>각 분야별 1위 경주마</TitleWrap>

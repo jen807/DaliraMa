@@ -8,7 +8,7 @@ const Container = styled.header`
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 350px;
+  min-width: 350px;
   height: 100px;
   display: flex;
   justify-content: space-between;

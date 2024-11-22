@@ -10,7 +10,6 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<SearchPage />} />
-        {/* <Route path="/detail/:id" element={<Detail />} /> */}
       </Routes>
     </HashRouter>
   );
