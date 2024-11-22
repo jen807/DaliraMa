@@ -159,7 +159,7 @@ const TitleWrap = styled.div`
   height: 50px;
   font-size: 20px;
   font-weight: 600;
-  text-align: center;
+  text-align: left;
 `;
 
 const InfoContainer = styled.div`
